@@ -1,0 +1,73 @@
+/* styles.css */
+/* style.css */
+
+/* Mengatur font global */
+body {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+/* Mengatur font spesifik untuk h1 */
+h1 {
+  font-family: 'Rubik', sans-serif;
+}
+/* Warna Utama */
+:root {
+  --oxford-blue: #002147;
+  --biru-muda: #567595;
+  --abu-muda: #f2f2f2;
+}
+
+/* Navbar */
+nav {
+    background-color: var(--oxford-blue);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+nav h1 {
+    margin: 0;
+}
+
+nav h2 {
+    font-size: 16px;
+}
+
+
+/* Card Container */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  gap:20px;
+}
+
+/* Card */
+.card {
+  width: 150px; /* Sesuaikan ukuran sesuai keinginan */
+  height: 150px;
+  background-color: var(--abu-muda);
+  border: 1px solid var(--biru-muda);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  text-decoration: none; /* Penting untuk menghilangkan garis bawah pada link */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Judul */
+.card h3 {
+  color: var(--oxford-blue);
+  margin: 0;
+}
+
+/* Deskripsi */
+.card p {
+  color: var(--biru-muda);
+  margin: 5px 0 0;
+}

@@ -1,173 +1,29 @@
 <!DOCTYPE html>
-<html lang="id">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Perbandingan Hash File</title>
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap');
-            
-            body {
-                font-family: 'Ubuntu', sans-serif;
-                margin: 20px;
-                background-color: #DFF2EB;
-            }
-    
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin-top: 20px;
-                border-radius: 5px;
-                overflow: hidden;
-                background-color: #B9E5E8;
-            }
-    
-            th, td {
-                border: 1px solid #7AB2D3;
-                text-align: left;
-                padding: 12px;
-            }
-    
-            th {
-                background-color: #4A628A;
-                color: white;
-            }
-    
-            td {
-                background-color: #DFF2EB;
-            }
-    
-            form {
-                margin-top: 20px;
-                background-color: #ffffff;
-                padding: 15px;
-                border: 1px solid #7AB2D3;
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
-    
-            input[type="number"], textarea {
-                width: 98%;
-                padding: 10px;
-                margin: 10px 0;
-                border: 1px solid #cccccc;
-                border-radius: 5px;
-            }
-    
-            input[type="submit"] {
-                background-color: #7AB2D3;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-    
-            input[type="submit"]:hover {
-                background-color: #4A628A;
-            }
-    
-            h1, h2 {
-                color: #4A628A;
-            }
-        </style>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Praktikum Keamanan Sistem Informasi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="https://alvea.es/wp-content/uploads/2022/04/ciberseguridad.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
 <body>
-    <h1>Perbandingan Hash File</h1>
-    
-    <h2>Informasi Hash</h2>
-    <table>
-        <tr>
-            <th>Deskripsi</th>
-            <th>Hash</th>
-        </tr>
-        <tr>
-            <td>Hash Asli</td>
-            <td id="original-hash">Loading...</td>
-        </tr>
-        <tr>
-            <td>Hash Dimodifikasi</td>
-            <td id="modified-hash">Loading...</td>
-        </tr>
-    </table>
-
-    <h2>Perbandingan Isi File</h2>
-    <table>
-        <tr>
-            <th>Nomor Baris</th>
-            <th>Isi Asli</th>
-            <th>Isi Dimodifikasi</th>
-        </tr>
-        <tbody id="file-content">
-            <!-- Konten file akan dipopulasi di sini -->
-        </tbody>
-    </table>
-
-    <h2>Update Data di File</h2>
-    <form onsubmit="updateData(event);">
-        <label for="line_number">Nomor Baris:</label>
-        <input type="number" id="line_number" min="1" placeholder="Masukkan nomor baris" required>
-        <br>
-        <textarea id="new_data" rows="4" cols="50" placeholder="Masukkan data baru di sini..." required></textarea><br>
-        <input type="submit" value="Update Data">
-    </form>
-
-    <script>
-        let originalHash = "";
-        let modifiedHash = "";
-        let fileContents = [];
-
-        // Fungsi untuk memuat konten dari dataFath.txt
-        async function loadContents() {
-            const response = await fetch('dataFath.txt');
-            const fileData = await response.text();
-            fileContents = fileData.split('\n');
-            originalHash = calculateHash(fileData);
-            modifiedHash = originalHash; // Inisialisasi dengan hash asli
-            updateTable();
-        }
-
-        // Fungsi untuk menghitung hash
-        function calculateHash(data) {
-            return CryptoJS.SHA256(data).toString();
-        }
-
-        // Fungsi untuk memperbarui tabel
-        function updateTable() {
-            const fileContentTable = document.getElementById('file-content');
-            fileContentTable.innerHTML = "";
-
-            fileContents.forEach((line, index) => {
-                fileContentTable.innerHTML += `<tr>
-                    <td>${index + 1}</td>
-                    <td>${line}</td>
-                    <td>${line}</td>
-                </tr>`;
-            });
-
-            document.getElementById('original-hash').innerText = originalHash;
-            document.getElementById('modified-hash').innerText = modifiedHash;
-        }
-
-        // Fungsi untuk memperbarui data
-        function updateData(event) {
-            event.preventDefault(); // Cegah pengiriman form
-            const lineNumber = parseInt(document.getElementById('line_number').value) - 1; // Menghitung indeks baris
-            const newData = document.getElementById('new_data').value;
-
-            if (lineNumber >= 0 && lineNumber < fileContents.length) {
-                fileContents[lineNumber] = newData; // Update isi file
-                modifiedHash = calculateHash(fileContents.join('\n')); // Hitung hash setelah modifikasi
-                document.getElementById('new_data').value = ''; // Kosongkan input
-                updateTable(); // Perbarui tabel
-            } else {
-                alert("Nomor baris tidak valid!");
-            }
-        }
-
-        // Muat konten saat halaman dimuat
-        loadContents();
-    </script>
+    <nav>
+        <h1>Daftar Praktikum Keamanan Sistem Informasi</h1>
+        <h1>Fathya Fathimah Azzahra - 714220012</h1>
+    </nav>
+    <div class="card-container">
+        <a href="./perbandingan_hash_file/index.html" class="card">
+            <h3>Perbandingan Hash File</h3>
+            <p>23 Oktober 2024</p>
+        </a>
+        <a href="./form_stride_dread/index.html" class="card">
+            <h3>Form STRIDE dan DREAD</h3>
+            <p>30 Oktober 2024</p>
+        </a>
+    </div>
 </body>
 </html>
